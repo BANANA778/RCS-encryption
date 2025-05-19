@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RCS Encryption Lab</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+
+</head>
+<body>
+    <div class="progress">
+        <span>1. Primes</span>
+        <span>2. Public Key</span>
+        <span>3. Private Key</span>
+        <span>4. Encrypt</span>
+        <span>5. Decrypt</span>
+    </div>
+
+    <div class="container">
+        <h1 class="title">RCS Encryption Lab</h1>
+        <input type="number" id="prime1" placeholder="Enter Prime Number 1">
+        <input type="number" id="prime2" placeholder="Enter Prime Number 2">
+        <button onclick="generateKeys()">Generate Keys</button>
+        <div class="output" id="keysOutput"></div>
+    </div>
+
+    <div class="container">
+        <h2 class="title">Encrypt Your Message</h2>
+        <textarea id="message" placeholder="Type your message..."></textarea>
+        <input type="text" id="publicKey" placeholder="Enter Public Key (n,e)">
+        <button onclick="encryptMessage()">Encrypt Message</button>
+        <div class="output" id="encryptedMessage"></div>
+    </div>
+
+    <div class="container">
+        <h2 class="title">Decrypt Your Message</h2>
+        <input type="text" id="privateKey" placeholder="Enter Private Key (n,d)">
+        <button onclick="decryptMessage()">Decrypt Message</button>
+        <div class="output" id="decryptedMessage"></div>
+    </div>
+<script>
+        function gcd(a, b) {
+            return b === 0 ? a : gcd(b, a % b);
+        }
+
+        function generateKeys() {
+            const p = parseInt(document.getElementById('prime1').value);
+            const q = parseInt(document.getElementById('prime2').value);
+            if (!p || !q || p === q) return alert('Please enter two distinct prime numbers.');
+
+            const n = p * q;
+            const phi = (p - 1) * (q - 1);
+
+            let e = 3;
+            while (gcd(e, phi) !== 1) e++;
+
+            let d = 1;
+            while ((d * e) % phi !== 1) d++;
+
+            document.getElementById('keysOutput').textContent = `Public Key: (${n}, ${e})\nPrivate Key: (${n}, ${d})`;
+            document.getElementById('publicKey').value = `${n},${e}`;
+            document.getElementById('privateKey').value = `${n},${d}`;
+        }
+
+        function modPow(base, exponent, mod) {
+            let result = 1;
+            base = base % mod;
+            while (exponent > 0) {
+                if (exponent % 2 === 1) {
+                    result = (result * base) % mod;
+                }
+                exponent = Math.floor(exponent / 2);
+                base = (base * base) % mod;
+            }
+            return result;
+        }
+
+        function encryptMessage() {
+            const message = document.getElementById('message').value;
+            const [n, e] = document.getElementById('publicKey').value.split(',').map(Number);
+            const encrypted = Array.from(message).map(char => modPow(char.charCodeAt(0), e, n));
+            document.getElementById('encryptedMessage').textContent = encrypted.join(' ');
+        }
+
+        function decryptMessage() {
+            const [n, d] = document.getElementById('privateKey').value.split(',').map(Number);
+            const encrypted = document.getElementById('encryptedMessage').textContent.split(' ').map(Number);
+            const decrypted = encrypted.map(code => String.fromCharCode(modPow(code, d, n))).join('');
+            document.getElementById('decryptedMessage').textContent = decrypted;
+        }
+    </script>
+</body>
+</html>
