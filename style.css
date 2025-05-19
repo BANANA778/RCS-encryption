@@ -13,14 +13,16 @@ body {
     width: 100%;
     max-width: 800px;
     display: flex;
+    color: #1500ff;
     justify-content: space-between;
     margin-bottom: 20px;
 }
 .progress span {
     flex: 1;
     text-align: center;
-    border-bottom: 2px solid #00ff41;
+    border-bottom: 2px solid #1500ff;
     padding: 10px 0;
+    font-size: 1.3em;
 }
 .container {
     width: 100%;
@@ -44,7 +46,7 @@ textarea, input {
     color: #00ff41;
     border: 2px solid #00ff41;
     border-radius: 10px;
-    font-size: 1.2em;
+    font-size: 1.3em;
     outline: none;
 }
 button {
@@ -71,5 +73,5 @@ button:hover {
     border: 2px solid #00ff41;
     white-space: pre-wrap;
     overflow-wrap: break-word;
-    font-size: 1.2em;
+    font-size: 1.3em;
 }
