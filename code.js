@@ -122,7 +122,7 @@ function animateKeyExplanation() {
             clearInterval(interval);
             setTimeout(() => {
                 document.getElementById('keyExplanation').innerHTML = ""; // Clear typing
-                prepareKeyExplanation(); // Show full explanation
+                prepareKeyExplanation(); 
             }, 500);
         }
     }, 50);
