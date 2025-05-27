@@ -18,55 +18,51 @@ function updateProgressBar() {
 }
 
 function nextSlide() {
-    if (currentSlide === 1) {
-
-        p = parseInt(document.getElementById('prime1').value);
-        q = parseInt(document.getElementById('prime2').value);
-        
-        if (!isPrime(p) || !isPrime(q) || p === q) {
-            alert('Please enter two distinct prime numbers under 30.');
-            return;
+    if (currentSlide < totalSlides) {
+        if (currentSlide === 1) {
+            p = parseInt(document.getElementById('prime1').value);
+            q = parseInt(document.getElementById('prime2').value);
+            
+            if (!isPrime(p) || !isPrime(q) || p === q) {
+                alert('Please enter two distinct prime numbers under 30.');
+                return;
+            }
+            
+            calculateKeys();
+            prepareKeyExplanation();
+        } else if (currentSlide === 3) {
+            const message = document.getElementById('message').value;
+            if (!message) {
+                alert('Please enter a message to encrypt.');
+                return;
+            }
+            prepareEncryptionVisualization(message);
         }
         
-        // Calculate keys
-        calculateKeys();
+        document.getElementById(`slide${currentSlide}`).classList.remove('active');
+        currentSlide++;
+        document.getElementById(`slide${currentSlide}`).classList.add('active');
         
-
-        prepareKeyExplanation();
-    } else if (currentSlide === 3) {
-
-        const message = document.getElementById('message').value;
-        if (!message) {
-            alert('Please enter a message to encrypt.');
-            return;
+        updateProgressBar();
+        
+        if (currentSlide === 2) {
+            animateKeyExplanation();
+        } else if (currentSlide === 4) {
+            prepareDecryptionVisualization();
+        } else if (currentSlide === 5) {
+            document.getElementById('finalPublicKey').textContent = `(${n}, ${e})`;
+            document.getElementById('finalPrivateKey').textContent = `(${n}, ${d})`;
         }
-        prepareEncryptionVisualization(message);
-    }
-    
-    document.getElementById(`slide${currentSlide}`).classList.remove('active');
-    document.getElementById(`slide${currentSlide}`).classList.add('previous');
-    currentSlide++;
-    document.getElementById(`slide${currentSlide}`).classList.add('active');
-    
-    updateProgressBar();
-    
-    if (currentSlide === 2) {
-        animateKeyExplanation();
-    } else if (currentSlide === 4) {
-        prepareDecryptionVisualization();
-    } else if (currentSlide === 5) {
-        document.getElementById('finalPublicKey').textContent = `(${n}, ${e})`;
-        document.getElementById('finalPrivateKey').textContent = `(${n}, ${d})`;
     }
 }
 
 function prevSlide() {
-    document.getElementById(`slide${currentSlide}`).classList.remove('active');
-    currentSlide--;
-    document.getElementById(`slide${currentSlide}`).classList.remove('previous');
-    document.getElementById(`slide${currentSlide}`).classList.add('active');
-    
-    updateProgressBar();
+    if (currentSlide > 1) {
+        document.getElementById(`slide${currentSlide}`).classList.remove('active');
+        currentSlide--;
+        document.getElementById(`slide${currentSlide}`).classList.add('active');
+        updateProgressBar();
+    }
 }
 
 function isPrime(num) {
@@ -93,44 +89,45 @@ function gcd(a, b) {
 }
 
 function prepareKeyExplanation() {
-    const explanation = `
+    const explanationHTML = `
         <div class="explanation">
             <p>1. First we calculate <span class="highlight">n = p × q</span></p>
             <p class="equation">n = ${p} × ${q} = ${n}</p>
-            
-            <p>2. Then calculate <span class="highlight">φ(n) = (p-1) × (q-1)</span></p>
-            <p class="equation">φ(n) = (${p}-1) × (${q}-1) = ${phi}</p>
-            
-            <p>3. Choose <span class="highlight">e</span> (public exponent) where 1 < e < φ(n) and gcd(e, φ(n)) = 1</p>
+
+            <p>2. Then calculate <span class="highlight">φ(n) = (p - 1) × (q - 1)</span></p>
+            <p class="equation">φ(n) = (${p} - 1) × (${q} - 1) = ${phi}</p>
+
+            <p>3. Choose <span class="highlight">e</span>, a number that is coprime with φ(n) and 1 &lt; e &lt; φ(n)</p>
             <p class="equation">e = ${e}</p>
-            
-            <p>4. Calculate <span class="highlight">d</span> (private exponent) where (d × e) mod φ(n) = 1</p>
-            <p class="equation">d = ${d} (because ${d} × ${e} mod ${phi} = ${(d * e) % phi})</p>
+
+            <p>4. Compute the modular inverse of e to get <span class="highlight">d</span></p>
+            <p class="equation">d = ${d}, because (d × e) mod φ(n) = 1</p>
         </div>
     `;
-    
-    document.getElementById('keyExplanation').innerHTML = explanation;
-    document.getElementById('publicKeyDisplay').textContent = `${n}, ${e}`;
-    document.getElementById('privateKeyDisplay').textContent = `${n}, ${d}`;
+    document.getElementById("keyExplanation").innerHTML = explanationHTML;
+    document.getElementById("finalKeys").style.display = "block";
 }
 
+
 function animateKeyExplanation() {
-    const elements = document.querySelectorAll('#keyExplanation .explanation > *');
-    let delay = 0;
-    
-    elements.forEach(el => {
-        el.style.opacity = '0';
-        setTimeout(() => {
-            el.style.transition = 'opacity 0.5s ease';
-            el.style.opacity = '1';
-        }, delay);
-        delay += 1000;
-    });
-    
-    setTimeout(() => {
-        document.getElementById('finalKeys').style.display = 'block';
-    }, delay + 1000);
+    const typingText = document.getElementById('typingText');
+    let index = 0;
+    const text = "Calculating keys...";
+    typingText.textContent = "";
+
+    const interval = setInterval(() => {
+        typingText.textContent += text.charAt(index);
+        index++;
+        if (index === text.length) {
+            clearInterval(interval);
+            setTimeout(() => {
+                document.getElementById('keyExplanation').innerHTML = ""; // Clear typing
+                prepareKeyExplanation(); // Show full explanation
+            }, 500);
+        }
+    }, 50);
 }
+
 
 function prepareEncryptionVisualization(message) {
     const originalBox = document.getElementById('originalMessage');
