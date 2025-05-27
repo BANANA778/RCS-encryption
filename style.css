@@ -2,28 +2,74 @@ body {
     background-color: #0d0d0d;
     color: #00ff41;
     font-family: 'VT323', monospace;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+.progress-container {
+    width: 100%;
+    height: 10px;
+    background-color: #111;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+}
+
+.progress-bar {
+    height: 100%;
+    background-color: #00ff41;
+    width: 0%;
+    transition: width 0.5s ease;
+}
+
+.progress-steps {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 800px;
+    margin: 30px auto 0;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.progress-step {
+    color: #1500ff;
+    font-size: 1.2em;
+    transition: all 0.3s ease;
+}
+
+.progress-step.active {
+    color: #00ff41;
+    transform: scale(1.1);
+}
+
+.slide {
+    width: 100vw;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
-    min-height: 100vh;
+    justify-content: center;
     padding: 20px;
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translateX(100%);
+    transition: transform 0.5s ease;
+    background-color: #0d0d0d;
 }
-.progress {
-    width: 100%;
-    max-width: 800px;
-    display: flex;
-    color: #1500ff;
-    justify-content: space-between;
-    margin-bottom: 20px;
+
+.slide.active {
+    transform: translateX(0);
 }
-.progress span {
-    flex: 1;
-    text-align: center;
-    border-bottom: 2px solid #1500ff;
-    padding: 10px 0;
-    font-size: 1.3em;
+
+.slide.previous {
+    transform: translateX(-100%);
 }
+
 .container {
     width: 100%;
     max-width: 800px;
@@ -33,12 +79,20 @@ body {
     box-shadow: 0 0 20px #00ff41;
     margin-bottom: 30px;
 }
+
 .title {
     font-size: 2.5em;
     margin-bottom: 20px;
     text-align: center;
 }
-textarea, input {
+
+.subtitle {
+    font-size: 1.8em;
+    margin-bottom: 15px;
+    color: #33ff99;
+}
+
+input {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
@@ -49,9 +103,9 @@ textarea, input {
     font-size: 1.3em;
     outline: none;
 }
+
 button {
-    width: 100%;
-    padding: 15px;
+    padding: 15px 30px;
     background-color: #00ff41;
     color: #111;
     font-size: 1.5em;
@@ -59,11 +113,13 @@ button {
     border-radius: 10px;
     cursor: pointer;
     transition: all 0.3s ease;
-    margin-bottom: 15px;
+    margin: 10px;
 }
+
 button:hover {
     background-color: #33ff99;
 }
+
 .output {
     min-height: 100px;
     padding: 10px;
@@ -74,4 +130,104 @@ button:hover {
     white-space: pre-wrap;
     overflow-wrap: break-word;
     font-size: 1.3em;
+}
+
+.typing {
+    border-right: 2px solid #00ff41;
+    animation: blink 0.7s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { border-color: transparent; }
+    50% { border-color: #00ff41; }
+}
+
+.equation {
+    font-size: 1.5em;
+    margin: 20px 0;
+    padding: 10px;
+    background-color: #111;
+    border-left: 3px solid #00ff41;
+}
+
+.highlight {
+    color: #ff00ff;
+    font-weight: bold;
+}
+
+.nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 800px;
+}
+
+.arrow {
+    font-size: 2em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.arrow:hover {
+    color: #33ff99;
+    transform: scale(1.2);
+}
+
+.visualization {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.step {
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #111;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.message-box {
+    border: 2px solid #00ff41;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+}
+
+.char-box {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    margin: 2px;
+    border: 1px solid #00ff41;
+    border-radius: 3px;
+}
+
+.number-box {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    margin: 2px;
+    border: 1px solid #ff00ff;
+    border-radius: 3px;
+    background-color: #111;
+}
+
+.explanation {
+    margin: 20px 0;
+    line-height: 1.6;
+}
+
+.final-keys {
+    font-size: 1.5em;
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #111;
+    border-radius: 10px;
+    border: 2px solid #ff00ff;
 }

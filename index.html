@@ -3,93 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RCS Encryption Lab</title>
+    <title>RSA Encryption Lab</title>
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
-
 </head>
 <body>
-    <div class="progress">
-        <span>1. Primes</span>
-        <span>2. Public Key</span>
-        <span>3. Private Key</span>
-        <span>4. Encrypt</span>
-        <span>5. Decrypt</span>
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
     </div>
-
-    <div class="container">
-        <h1 class="title">RCS Encryption Lab</h1>
-        <input type="number" id="prime1" placeholder="Enter Prime Number 1">
-        <input type="number" id="prime2" placeholder="Enter Prime Number 2">
-        <button onclick="generateKeys()">Generate Keys</button>
-        <div class="output" id="keysOutput"></div>
+    
+    <div class="progress-steps">
+        <span class="progress-step active" id="step1">1. Primes</span>
+        <span class="progress-step" id="step2">2. Keys</span>
+        <span class="progress-step" id="step3">3. Encrypt</span>
+        <span class="progress-step" id="step4">4. Decrypt</span>
+        <span class="progress-step" id="step5">5. Complete</span>
     </div>
-
-    <div class="container">
-        <h2 class="title">Encrypt Your Message</h2>
-        <textarea id="message" placeholder="Type your message..."></textarea>
-        <input type="text" id="publicKey" placeholder="Enter Public Key (n,e)">
-        <button onclick="encryptMessage()">Encrypt Message</button>
-        <div class="output" id="encryptedMessage"></div>
+    
+    <!-- Slide 1: Prime Numbers -->
+    <div class="slide active" id="slide1">
+        <div class="container">
+            <h1 class="title">RSA Encryption Lab</h1>
+            <p class="explanation">RSA encryption starts with two distinct prime numbers. Let's pick two primes under 30:</p>
+            
+            <input type="number" id="prime1" placeholder="First prime (e.g., 5, 7, 11)" min="2" max="29">
+            <input type="number" id="prime2" placeholder="Second prime (different from first)" min="2" max="29">
+            
+            <div class="nav-buttons">
+                <div></div>
+                <button class="arrow" onclick="nextSlide()">→</button>
+            </div>
+        </div>
     </div>
-
-    <div class="container">
-        <h2 class="title">Decrypt Your Message</h2>
-        <input type="text" id="privateKey" placeholder="Enter Private Key (n,d)">
-        <button onclick="decryptMessage()">Decrypt Message</button>
-        <div class="output" id="decryptedMessage"></div>
+    
+    <!-- Slide 2: Key Generation -->
+    <div class="slide" id="slide2">
+        <div class="container">
+            <h1 class="title">Key Generation</h1>
+            <div id="keyExplanation">
+                <p class="typing" id="typingText">Calculating keys...</p>
+            </div>
+            
+            <div class="final-keys" id="finalKeys" style="display: none;">
+                <p>Public Key: (n, e) = <span id="publicKeyDisplay"></span></p>
+                <p>Private Key: (n, d) = <span id="privateKeyDisplay"></span></p>
+            </div>
+            
+            <div class="nav-buttons">
+                <button class="arrow" onclick="prevSlide()">←</button>
+                <button class="arrow" onclick="nextSlide()">→</button>
+            </div>
+        </div>
     </div>
-<script>
-        function gcd(a, b) {
-            return b === 0 ? a : gcd(b, a % b);
-        }
-
-        function generateKeys() {
-            const p = parseInt(document.getElementById('prime1').value);
-            const q = parseInt(document.getElementById('prime2').value);
-            if (!p || !q || p === q) return alert('Please enter two distinct prime numbers.');
-
-            const n = p * q;
-            const phi = (p - 1) * (q - 1);
-
-            let e = 3;
-            while (gcd(e, phi) !== 1) e++;
-
-            let d = 1;
-            while ((d * e) % phi !== 1) d++;
-
-            document.getElementById('keysOutput').textContent = `Public Key: (${n}, ${e})\nPrivate Key: (${n}, ${d})`;
-            document.getElementById('publicKey').value = `${n},${e}`;
-            document.getElementById('privateKey').value = `${n},${d}`;
-        }
-
-        function modPow(base, exponent, mod) {
-            let result = 1;
-            base = base % mod;
-            while (exponent > 0) {
-                if (exponent % 2 === 1) {
-                    result = (result * base) % mod;
-                }
-                exponent = Math.floor(exponent / 2);
-                base = (base * base) % mod;
-            }
-            return result;
-        }
-
-        function encryptMessage() {
-            const message = document.getElementById('message').value;
-            const [n, e] = document.getElementById('publicKey').value.split(',').map(Number);
-            const encrypted = Array.from(message).map(char => modPow(char.charCodeAt(0), e, n));
-            document.getElementById('encryptedMessage').textContent = encrypted.join(' ');
-        }
-
-        function decryptMessage() {
-            const [n, d] = document.getElementById('privateKey').value.split(',').map(Number);
-            const encrypted = document.getElementById('encryptedMessage').textContent.split(' ').map(Number);
-            const decrypted = encrypted.map(code => String.fromCharCode(modPow(code, d, n))).join('');
-            document.getElementById('decryptedMessage').textContent = decrypted;
-        }
-    </script>
+    
+    <!-- Slide 3: Encryption -->
+    <div class="slide" id="slide3">
+        <div class="container">
+            <h1 class="title">Encryption</h1>
+            <div class="explanation">
+                <p>Now let's encrypt a message using the public key.</p>
+                <p>Each character will be converted to its ASCII code, then encrypted using:</p>
+                <p class="equation">encrypted = (message<sup>e</sup>) mod n</p>
+            </div>
+            
+            <textarea id="message" placeholder="Type your message here..." rows="3"></textarea>
+            
+            <div class="visualization" id="encryptVisualization" style="display: none;">
+                <div class="message-box" id="originalMessage"></div>
+                <div>↓ Convert to ASCII codes ↓</div>
+                <div class="message-box" id="asciiCodes"></div>
+                <div>↓ Apply encryption formula ↓</div>
+                <div class="message-box" id="encryptedResult"></div>
+            </div>
+            
+            <div class="nav-buttons">
+                <button class="arrow" onclick="prevSlide()">←</button>
+                <button class="arrow" onclick="nextSlide()">→</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Slide 4: Decryption -->
+    <div class="slide" id="slide4">
+        <div class="container">
+            <h1 class="title">Decryption</h1>
+            <div class="explanation">
+                <p>Now let's decrypt the message using the private key.</p>
+                <p>Each encrypted number will be decrypted using:</p>
+                <p class="equation">decrypted = (encrypted<sup>d</sup>) mod n</p>
+                <p>Then converted back to ASCII characters.</p>
+            </div>
+            
+            <div class="visualization" id="decryptVisualization" style="display: none;">
+                <div class="message-box" id="encryptedNumbers"></div>
+                <div>↓ Apply decryption formula ↓</div>
+                <div class="message-box" id="decryptedAscii"></div>
+                <div>↓ Convert to characters ↓</div>
+                <div class="message-box" id="decryptedMessage"></div>
+            </div>
+            
+            <div class="nav-buttons">
+                <button class="arrow" onclick="prevSlide()">←</button>
+                <button class="arrow" onclick="nextSlide()">→</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Slide 5: Completion -->
+    <div class="slide" id="slide5">
+        <div class="container">
+            <h1 class="title">RSA Encryption Complete!</h1>
+            <div class="explanation">
+                <p>You've successfully:</p>
+                <ol>
+                    <li>Selected two prime numbers</li>
+                    <li>Generated public and private keys</li>
+                    <li>Encrypted a message</li>
+                    <li>Decrypted the message</li>
+                </ol>
+                
+                <p>In RSA, the public key can be shared with anyone to encrypt messages, but only the private key holder can decrypt them.</p>
+                <p>This works because of the mathematical relationship between the keys that makes encryption easy but decryption hard without the private key.</p>
+            </div>
+            
+            <div class="final-keys">
+                <p>Public Key: (n, e) = <span id="finalPublicKey"></span></p>
+                <p>Private Key: (n, d) = <span id="finalPrivateKey"></span></p>
+            </div>
+            
+            <div class="nav-buttons">
+                <button class="arrow" onclick="prevSlide()">←</button>
+                <button onclick="location.reload()">Start Over</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
 </body>
 </html>
