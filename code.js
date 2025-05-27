@@ -22,7 +22,7 @@ function nextSlide() {
         if (currentSlide === 1) {
             p = parseInt(document.getElementById('prime1').value);
             q = parseInt(document.getElementById('prime2').value);
-            
+           
             if (!isPrime(p) || !isPrime(q) || p === q) {
                 alert('Please enter two distinct prime numbers under 30.');
                 return;
@@ -65,16 +65,6 @@ function prevSlide() {
     }
 }
 
-function isPrime(num) {
-    if (num <= 1) return false;
-    if (num === 2) return true;
-    if (num % 2 === 0) return false;
-    for (let i = 3; i <= Math.sqrt(num); i += 2) {
-        if (num % i === 0) return false;
-    }
-    return true;
-}
-
 function calculateKeys() {
     n = p * q;
     phi = (p - 1) * (q - 1);
@@ -108,6 +98,15 @@ function prepareKeyExplanation() {
     document.getElementById("finalKeys").style.display = "block";
 }
 
+function isPrime(num) {
+    if (num <= 1) return false;
+    if (num === 2) return true;
+    if (num % 2 === 0) return false;
+    for (let i = 3; i <= Math.sqrt(num); i += 2) {
+        if (num % i === 0) return false;
+    }
+    return true;
+}
 
 function animateKeyExplanation() {
     const typingText = document.getElementById('typingText');
