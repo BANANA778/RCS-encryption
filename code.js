@@ -7,7 +7,6 @@ function updateProgressBar() {
     const progress = ((currentSlide - 1) / (totalSlides - 1)) * 100;
     document.getElementById('progressBar').style.width = `${progress}%`;
     
-    // Update active steps
     for (let i = 1; i <= totalSlides; i++) {
         const step = document.getElementById(`step${i}`);
         if (i <= currentSlide) {
@@ -20,7 +19,7 @@ function updateProgressBar() {
 
 function nextSlide() {
     if (currentSlide === 1) {
-        // Validate primes on slide 1 before proceeding
+
         p = parseInt(document.getElementById('prime1').value);
         q = parseInt(document.getElementById('prime2').value);
         
@@ -32,10 +31,10 @@ function nextSlide() {
         // Calculate keys
         calculateKeys();
         
-        // Prepare slide 2 animation
+
         prepareKeyExplanation();
     } else if (currentSlide === 3) {
-        // Prepare encryption visualization
+
         const message = document.getElementById('message').value;
         if (!message) {
             alert('Please enter a message to encrypt.');
@@ -52,13 +51,10 @@ function nextSlide() {
     updateProgressBar();
     
     if (currentSlide === 2) {
-        // Start the typing animation for key explanation
         animateKeyExplanation();
     } else if (currentSlide === 4) {
-        // Prepare decryption visualization
         prepareDecryptionVisualization();
     } else if (currentSlide === 5) {
-        // Show final keys
         document.getElementById('finalPublicKey').textContent = `(${n}, ${e})`;
         document.getElementById('finalPrivateKey').textContent = `(${n}, ${d})`;
     }
@@ -84,15 +80,10 @@ function isPrime(num) {
 }
 
 function calculateKeys() {
-    // Calculate n and phi
     n = p * q;
     phi = (p - 1) * (q - 1);
-    
-    // Find e (public exponent)
     e = 3;
     while (gcd(e, phi) !== 1) e++;
-    
-    // Find d (private exponent)
     d = 1;
     while ((d * e) % phi !== 1) d++;
 }
@@ -146,7 +137,6 @@ function prepareEncryptionVisualization(message) {
     const asciiBox = document.getElementById('asciiCodes');
     const resultBox = document.getElementById('encryptedResult');
     
-    // Show original message
     originalBox.innerHTML = '';
     for (let char of message) {
         const charBox = document.createElement('span');
@@ -155,7 +145,7 @@ function prepareEncryptionVisualization(message) {
         originalBox.appendChild(charBox);
     }
     
-    // Show ASCII codes
+
     asciiBox.innerHTML = '';
     for (let char of message) {
         const code = char.charCodeAt(0);
@@ -165,7 +155,6 @@ function prepareEncryptionVisualization(message) {
         asciiBox.appendChild(codeBox);
     }
     
-    // Show encrypted result
     resultBox.innerHTML = '';
     encryptedNumbers = [];
     for (let char of message) {
@@ -186,7 +175,7 @@ function prepareDecryptionVisualization() {
     const asciiBox = document.getElementById('decryptedAscii');
     const messageBox = document.getElementById('decryptedMessage');
     
-    // Show encrypted numbers
+
     encryptedBox.innerHTML = '';
     for (let num of encryptedNumbers) {
         const numBox = document.createElement('span');
@@ -195,7 +184,6 @@ function prepareDecryptionVisualization() {
         encryptedBox.appendChild(numBox);
     }
     
-    // Show decrypted ASCII codes
     asciiBox.innerHTML = '';
     const decryptedCodes = [];
     for (let num of encryptedNumbers) {
@@ -207,7 +195,7 @@ function prepareDecryptionVisualization() {
         asciiBox.appendChild(codeBox);
     }
     
-    // Show decrypted message
+
     messageBox.innerHTML = '';
     for (let code of decryptedCodes) {
         const char = String.fromCharCode(code);
