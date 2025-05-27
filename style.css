@@ -1,6 +1,6 @@
 body {
     background-color: #0d0d0d;
-    color: #00ff41;
+    color: #e590fb;
     font-family: 'VT323', monospace;
     margin: 0;
     padding: 0;
@@ -19,7 +19,7 @@ body {
 
 .progress-bar {
     height: 100%;
-    background-color: #00ff41;
+    background-color: #e590fb;
     width: 0%;
     transition: width 0.5s ease;
 }
@@ -36,12 +36,12 @@ body {
 
 .progress-step {
     color: #1500ff;
-    font-size: 1.2em;
+    font-size: 2em;
     transition: all 0.3s ease;
 }
 
 .progress-step.active {
-    color: #00ff41;
+    color: #e590fb;
     transform: scale(1.1);
 }
 
@@ -76,18 +76,18 @@ body {
     padding: 20px;
     background-color: rgba(0, 0, 0, 0.8);
     border-radius: 15px;
-    box-shadow: 0 0 20px #00ff41;
+    box-shadow: 0 0 20px #e590fb;
     margin-bottom: 30px;
 }
 
 .title {
-    font-size: 2.5em;
+    font-size: 3em;
     margin-bottom: 20px;
     text-align: center;
 }
 
 .subtitle {
-    font-size: 1.8em;
+    font-size: 2em;
     margin-bottom: 15px;
     color: #33ff99;
 }
@@ -97,18 +97,18 @@ input {
     padding: 10px;
     margin-bottom: 15px;
     background-color: #111;
-    color: #00ff41;
-    border: 2px solid #00ff41;
+    color: #e590fb;
+    border: 2px solid #e590fb;
     border-radius: 10px;
-    font-size: 1.3em;
+    font-size: 1.5em;
     outline: none;
 }
 
 button {
     padding: 15px 30px;
-    background-color: #00ff41;
+    background-color: #e590fb;
     color: #111;
-    font-size: 1.5em;
+    font-size: 3em;
     border: none;
     border-radius: 10px;
     cursor: pointer;
@@ -117,29 +117,29 @@ button {
 }
 
 button:hover {
-    background-color: #33ff99;
+    background-color: #e9b9f6;
 }
 
 .output {
     min-height: 100px;
     padding: 10px;
     background-color: #111;
-    color: #00ff41;
+    color: #e590fb;
     border-radius: 10px;
-    border: 2px solid #00ff41;
+    border: 2px solid #e590fb;
     white-space: pre-wrap;
     overflow-wrap: break-word;
-    font-size: 1.3em;
+    font-size: 1.5em;
 }
 
 .typing {
-    border-right: 2px solid #00ff41;
+    border-right: 2px solid #e590fb;
     animation: blink 0.7s infinite;
 }
 
 @keyframes blink {
     0%, 100% { border-color: transparent; }
-    50% { border-color: #00ff41; }
+    50% { border-color: #e590fb; }
 }
 
 .equation {
@@ -147,7 +147,7 @@ button:hover {
     margin: 20px 0;
     padding: 10px;
     background-color: #111;
-    border-left: 3px solid #00ff41;
+    border-left: 3px solid #e590fb;
 }
 
 .highlight {
@@ -163,7 +163,7 @@ button:hover {
 }
 
 .arrow {
-    font-size: 2em;
+    font-size: 1.3em;
     cursor: pointer;
     transition: all 0.3s ease;
 }
@@ -202,7 +202,7 @@ button:hover {
     line-height: 30px;
     text-align: center;
     margin: 2px;
-    border: 1px solid #00ff41;
+    border: 1px solid #e590fb;
     border-radius: 3px;
 }
 
@@ -220,7 +220,8 @@ button:hover {
 
 .explanation {
     margin: 20px 0;
-    line-height: 1.6;
+    line-height: 1.4;
+    font-size: 1.5em;
 }
 
 .final-keys {
@@ -236,8 +237,8 @@ button:hover {
     width: 100%;
     padding: 10px;
     background-color: #111;
-    color: #00ff41;
-    border: 2px solid #00ff41;
+    color: #e590fb;
+    border: 2px solid #e590fb;
     border-radius: 10px;
     font-size: 1.3em;
     resize: none;
