@@ -30,14 +30,14 @@ function nextSlide() {
             
             calculateKeys();
             prepareKeyExplanation();
-        } else if (currentSlide === 3) {
+        } /*else if (currentSlide === 3) {
             const message = document.getElementById('message').value;
             if (!message) {
                 alert('Please enter a message to encrypt.');
                 return;
             }
             prepareEncryptionVisualization(message);
-        }
+        }*/ //it move to updateEncryptionVisualization 
         
         document.getElementById(`slide${currentSlide}`).classList.remove('active');
         currentSlide++;
@@ -129,8 +129,14 @@ function isPrime(num) {
     return true;
 }
 
-
-
+function updateEncryptionVisualization() {
+    const message = document.getElementById('message').value;
+    if (!message) {
+        alert('Please enter a message first');
+        return;
+    }
+    prepareEncryptionVisualization(message);
+}
 
 function prepareEncryptionVisualization(message) {
     const originalBox = document.getElementById('originalMessage');
