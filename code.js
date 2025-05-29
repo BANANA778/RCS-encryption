@@ -19,24 +19,26 @@ function updateProgressBar() {
 
 function nextSlide() {
     if (currentSlide < totalSlides) {
-        if (currentSlide === 1 && !validatePrimes()) {
+        
+        if (currentSlide === 3) {
+            const message = document.getElementById('message').value;
+            if (!message.trim()) {
+                alert('Please enter a message to encrypt.');
+                return;
+            }
+        }
+        
+        if (currentSlide === 1) {
             p = parseInt(document.getElementById('prime1').value);
             q = parseInt(document.getElementById('prime2').value);
-           
-            if (!isPrime(p) || !isPrime(q) || p === q) {
-                alert('Please enter two distinct prime numbers under 30.'); // not working
+            
+            if (!validatePrimes()) {
                 return;
             }
             
             calculateKeys();
             prepareKeyExplanation();
-            const message = document.getElementById('message').value;
-            if (!message) {
-                alert('Please enter a message to encrypt.');
-                return;
-            }
-            prepareEncryptionVisualization(message);
-        } //it move to updateEncryptionVisualization 
+        }
         
         document.getElementById(`slide${currentSlide}`).classList.remove('active');
         currentSlide++;
@@ -46,19 +48,13 @@ function nextSlide() {
         
         if (currentSlide === 2) {
             animateKeyExplanation();
+        } else if (currentSlide === 3) {
+            const message = document.getElementById('message').value;
+            prepareEncryptionVisualization(message);
         } else if (currentSlide === 4) {
             prepareDecryptionVisualization();
-        } else if (currentSlide === 5) {
             document.getElementById('finalPublicKey').textContent = `(${n}, ${e})`;
             document.getElementById('finalPrivateKey').textContent = `(${n}, ${d})`;
-        }
-        if (currentSlide === 3) {
-            const message = document.getElementById('message').value;
-            if (!message.trim()) {
-                alert('Please enter a message to encrypt.');
-                return;
-            }
-            prepareEncryptionVisualization(message);
         }
     }
 }
@@ -134,8 +130,10 @@ function prepareKeyExplanation() {
         </div>
     `;
     document.getElementById("keyExplanation").innerHTML = explanationHTML;
+    document.getElementById("slide2PublicKey").textContent = `(${n}, ${e})`;
     document.getElementById("finalPublicKey").textContent = `(${n}, ${e})`;
     document.getElementById("privateKeyDisplay").textContent = `(${n}, ${d})`;
+    document.getElementById("finalPrivateKey").textContent = `(${n}, ${d})`; 
     document.getElementById("finalKeys").style.display = "block";
 }
 
