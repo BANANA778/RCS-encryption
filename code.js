@@ -18,8 +18,9 @@ function updateProgressBar() {
 }
 
 function nextSlide() {
+     if (currentSlide === 1 && !validatePrimes()) return;
     if (currentSlide < totalSlides) {
-        if (currentSlide === 1) {
+        if (currentSlide === 1 && !validatePrimes()) {
             p = parseInt(document.getElementById('prime1').value);
             q = parseInt(document.getElementById('prime2').value);
            
@@ -30,14 +31,13 @@ function nextSlide() {
             
             calculateKeys();
             prepareKeyExplanation();
-        } /*else if (currentSlide === 3) {
             const message = document.getElementById('message').value;
             if (!message) {
                 alert('Please enter a message to encrypt.');
                 return;
             }
             prepareEncryptionVisualization(message);
-        }*/ //it move to updateEncryptionVisualization 
+        } //it move to updateEncryptionVisualization 
         
         document.getElementById(`slide${currentSlide}`).classList.remove('active');
         currentSlide++;
@@ -119,15 +119,78 @@ function prepareKeyExplanation() {
     document.getElementById("finalKeys").style.display = "block";
 }
 
-function isPrime(num) {
-    if (num <= 1) return false;
-    if (num === 2) return true;
-    if (num % 2 === 0) return false;
-    for (let i = 3; i <= Math.sqrt(num); i += 2) {
-        if (num % i === 0) return false;
+function validatePrimes() {
+    const pInput = document.getElementById('prime1');
+    const qInput = document.getElementById('prime2');
+    const p = parseInt(pInput.value);
+    const q = parseInt(qInput.value);
+    //emtpy or whitespace check
+    if (!pInput.value.trim() || !qInput.value.trim()) {
+        const messages = [
+            "Empty like my patience.",
+            "The absence of effort is noted.",
+            "You gave me whitespace. I can't encrypt vibes.",
+            "Whitespace doesn't count unless you're coding Python. And you're not."
+        ];
+        alert(messages[Math.floor(Math.random() * messages.length)]);
+        return false;
     }
+    // not a number check
+    if (isNaN(p) || isNaN(q)) {
+        const messages = [
+            "This isn't Scrabble. Put a real number in.",
+            "Unless '" + (isNaN(p) ? pInput.value : qInput.value) + "' is a new kind of integer, I need digits.",
+            "What is that? No, seriously. What is that???",
+            "Congratulations, you've unlocked... absolutely nothing. Use a number.",
+            "Can't calculate vibes. Numbers only."
+        ];
+        alert(messages[Math.floor(Math.random() * messages.length)]);
+        return false;
+    }
+    // same number check
+    if (p === q) {
+        const messages = [
+            "Two primes, one brain cell. Try again.",
+            "Plot twist: you need *different* numbers. Wild, I know.",
+            "Same number? How original. Try two distinct primes.",
+            "I need two primes, not a prime and its shadow.",
+        ];
+        alert(messages[Math.floor(Math.random() * messages.length)]);
+        return false;
+    }
+    // prime check
+    if (!isPrime(p) || !isPrime(q)) {
+        const messages = [
+            "If it divides evenly, I don't want it.",
+            "This number has more factors than my dating history.",
+            "This number couldn't be prime if it tried."
+        ];
+        alert(messages[Math.floor(Math.random() * messages.length)]);
+        return false;
+    }
+    //size check
+    if (p * q < 128) {
+        const messages = [
+            "We're doing encryption, not preschool math. Try BIGGER.",
+            "That number's adorable. Unfortunately, useless. Go BIGGER.",
+        ];
+        alert(messages[Math.floor(Math.random() * messages.length)]);
+        return false;
+    }
+    // upper limit check
+    if (p > 100 || q > 100) {
+        const messages = [
+            "I'm not solving Collatz conjecture here. Pick something smaller.",
+            "Okay, calm down with the giant numbers.",
+            "We get it, you can count. Now pick reasonably."
+        ];
+        alert(messages[Math.floor(Math.random() * messages.length)]);
+        return false;
+    }
+    
     return true;
 }
+
 
 function updateEncryptionVisualization() {
     const message = document.getElementById('message').value;
