@@ -18,7 +18,6 @@ function updateProgressBar() {
 }
 
 function nextSlide() {
-     if (currentSlide === 1 && !validatePrimes()) return;
     if (currentSlide < totalSlides) {
         if (currentSlide === 1 && !validatePrimes()) {
             p = parseInt(document.getElementById('prime1').value);
@@ -53,6 +52,14 @@ function nextSlide() {
             document.getElementById('finalPublicKey').textContent = `(${n}, ${e})`;
             document.getElementById('finalPrivateKey').textContent = `(${n}, ${d})`;
         }
+        if (currentSlide === 3) {
+            const message = document.getElementById('message').value;
+            if (!message.trim()) {
+                alert('Please enter a message to encrypt.');
+                return;
+            }
+            prepareEncryptionVisualization(message);
+        }
     }
 }
 
@@ -63,6 +70,19 @@ function prevSlide() {
         document.getElementById(`slide${currentSlide}`).classList.add('active');
         updateProgressBar();
     }
+    if (currentSlide === 3) {
+        document.getElementById('encryptVisualization').style.display = 'none';
+    }
+}
+
+function isPrime(num) {
+    if (num <= 1) return false;
+    if (num <= 3) return true;
+    if (num % 2 === 0 || num % 3 === 0) return false;
+    for (let i = 5; i * i <= num; i += 6) {
+        if (num % i === 0 || num % (i + 2) === 0) return false;
+    }
+    return true;
 }
 
 function calculateKeys() {
@@ -124,6 +144,16 @@ function validatePrimes() {
     const qInput = document.getElementById('prime2');
     const p = parseInt(pInput.value);
     const q = parseInt(qInput.value);
+    // prime check
+    if (!isPrime(p) || !isPrime(q)) {
+        const messages = [
+            "If it divides evenly, I don't want it.",
+            "This number has more factors than my dating history.",
+            "This number couldn't be prime if it tried."
+        ];
+        alert(messages[Math.floor(Math.random() * messages.length)]);
+        return false;
+    }
     //emtpy or whitespace check
     if (!pInput.value.trim() || !qInput.value.trim()) {
         const messages = [
@@ -154,16 +184,6 @@ function validatePrimes() {
             "Plot twist: you need *different* numbers. Wild, I know.",
             "Same number? How original. Try two distinct primes.",
             "I need two primes, not a prime and its shadow.",
-        ];
-        alert(messages[Math.floor(Math.random() * messages.length)]);
-        return false;
-    }
-    // prime check
-    if (!isPrime(p) || !isPrime(q)) {
-        const messages = [
-            "If it divides evenly, I don't want it.",
-            "This number has more factors than my dating history.",
-            "This number couldn't be prime if it tried."
         ];
         alert(messages[Math.floor(Math.random() * messages.length)]);
         return false;
