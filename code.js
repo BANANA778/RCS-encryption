@@ -24,7 +24,7 @@ function nextSlide() {
             q = parseInt(document.getElementById('prime2').value);
            
             if (!isPrime(p) || !isPrime(q) || p === q) {
-                alert('Please enter two distinct prime numbers under 30.');
+                alert('Please enter two distinct prime numbers under 30.'); // not working
                 return;
             }
             
@@ -165,18 +165,7 @@ function validatePrimes() {
         alert(messages[Math.floor(Math.random() * messages.length)]);
         return false;
     }
-    // not a number check
-    if (isNaN(p) || isNaN(q)) {
-        const messages = [
-            "This isn't Scrabble. Put a real number in.",
-            "Unless '" + (isNaN(p) ? pInput.value : qInput.value) + "' is a new kind of integer, I need digits.",
-            "What is that? No, seriously. What is that???",
-            "Congratulations, you've unlocked... absolutely nothing. Use a number.",
-            "Can't calculate vibes. Numbers only."
-        ];
-        alert(messages[Math.floor(Math.random() * messages.length)]);
-        return false;
-    }
+    
     // same number check
     if (p === q) {
         const messages = [
@@ -207,7 +196,18 @@ function validatePrimes() {
         alert(messages[Math.floor(Math.random() * messages.length)]);
         return false;
     }
-    
+    // not a number check
+    if (isNaN(p) || isNaN(q)) {
+        const messages = [
+            "This isn't Scrabble. Put a real number in.",
+            "Unless '" + (isNaN(p) ? pInput.value : qInput.value) + "' is a new kind of integer, I need digits.",
+            "What is that? No, seriously. What is that???",
+            "Congratulations, you've unlocked... absolutely nothing. Use a number.",
+            "Can't calculate vibes. Numbers only."
+        ];
+        alert(messages[Math.floor(Math.random() * messages.length)]);
+        return false;
+    }
     return true;
 }
 
@@ -215,7 +215,7 @@ function validatePrimes() {
 function updateEncryptionVisualization() {
     const message = document.getElementById('message').value;
     if (!message) {
-        alert('Please enter a message first');
+        alert('Please enter a message first');// not working
         return;
     }
     prepareEncryptionVisualization(message);
