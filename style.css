@@ -160,6 +160,8 @@ button:hover {
     justify-content: space-between;
     width: 100%;
     max-width: 800px;
+    font-family: 'VT323', monospace;
+    font-size: 1.3em;
 }
 
 .arrow {
