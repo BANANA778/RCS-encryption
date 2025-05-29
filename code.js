@@ -78,36 +78,6 @@ function gcd(a, b) {
     return b === 0 ? a : gcd(b, a % b);
 }
 
-function prepareKeyExplanation() {
-    const explanationHTML = `
-        <div class="explanation">
-            <p>1. First we calculate <span class="highlight">n = p × q</span></p>
-            <p class="equation">n = ${p} × ${q} = ${n}</p>
-
-            <p>2. Then calculate <span class="highlight">φ(n) = (p - 1) × (q - 1)</span></p>
-            <p class="equation">φ(n) = (${p} - 1) × (${q} - 1) = ${phi}</p>
-
-            <p>3. Choose <span class="highlight">e</span>, a number that is coprime with φ(n) and 1 &lt; e &lt; φ(n)</p>
-            <p class="equation">e = ${e}</p>
-
-            <p>4. Compute the modular inverse of e to get <span class="highlight">d</span></p>
-            <p class="equation">d = ${d}, because (d × e) mod φ(n) = 1</p>
-        </div>
-    `;
-    document.getElementById("keyExplanation").innerHTML = explanationHTML;
-    document.getElementById("finalKeys").style.display = "block";
-}
-
-function isPrime(num) {
-    if (num <= 1) return false;
-    if (num === 2) return true;
-    if (num % 2 === 0) return false;
-    for (let i = 3; i <= Math.sqrt(num); i += 2) {
-        if (num % i === 0) return false;
-    }
-    return true;
-}
-
 function animateKeyExplanation() {
     const typingText = document.getElementById('typingText');
     let index = 0;
@@ -126,6 +96,40 @@ function animateKeyExplanation() {
         }
     }, 50);
 }
+
+function prepareKeyExplanation() {
+    const explanationHTML = `
+        <div class="explanation">
+            <p>1. First we calculate <span class="highlight">n = p × q</span></p>
+            <p class="equation">n = ${p} × ${q} = ${n}</p>
+
+            <p>2. Then calculate <span class="highlight">φ(n) = (p - 1) × (q - 1)</span></p>
+            <p class="equation">φ(n) = (${p} - 1) × (${q} - 1) = ${phi}</p>
+
+            <p>3. Choose <span class="highlight">e</span>, a number that is coprime with φ(n) and 1 &lt; e &lt; φ(n)</p>
+            <p class="equation">e = ${e}</p>
+
+            <p>4. Compute the modular inverse of e to get <span class="highlight">d</span></p>
+            <p class="equation">d = ${d}, because (d × e) mod φ(n) = 1</p>
+        </div>
+    `;
+    document.getElementById("keyExplanation").innerHTML = explanationHTML;
+    document.getElementById("finalPublicKey").textContent = `(${n}, ${e})`;
+    document.getElementById("privateKeyDisplay").textContent = `(${n}, ${d})`;
+    document.getElementById("finalKeys").style.display = "block";
+}
+
+function isPrime(num) {
+    if (num <= 1) return false;
+    if (num === 2) return true;
+    if (num % 2 === 0) return false;
+    for (let i = 3; i <= Math.sqrt(num); i += 2) {
+        if (num % i === 0) return false;
+    }
+    return true;
+}
+
+
 
 
 function prepareEncryptionVisualization(message) {
